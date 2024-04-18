@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "contractName": "John Doe",
+    "detail": "bvjbcxjv ih ghxch g hffk hcxgh cxghx  k hg xhx hgx hgh kbbxh hxh ",
+    "status": "Active"
+  },
+  {
+      "id": 2,
+      "contractName": "John Doe",
+      "detail": "bvjbcxjv ih ghxch g hffk hcxgh cxghx  k hg xhx hgx hgh kbbxh hxh ",
+      "status": "Inactive"
+  },
+  {
+      "id": 3,
+      "contractName": "John Doe",
+      "detail": "bvjbcxjv ih ghxch g hffk hcxgh cxghx  k hg xhx hgx hgh kbbxh hxh ",
+      "status": "Active"
+  }
+]
