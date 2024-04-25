@@ -32,6 +32,7 @@ function App() {
       <Route exact path="/edit/:id" component={Edit} />
       <Route exact path="/view/:id" component={Details} />
       <Route exact path="/login" component={Login}/>
+      <Route exact path="/employeelogin" component={Login}/>
       
     </Switch>
    

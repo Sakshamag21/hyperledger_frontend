@@ -23,27 +23,27 @@ const Home = (props) => {
 
     const getdata = async () => {
 
-        // const res = await fetch("/getdata", {
-        //     method: "GET",
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     }
-        // });
-        // const data = await res.json();
-        // console.log(data);
-        // if (res.status === 422 || !data) {
-        //     console.log("error ");
-        // } else {
-        //     setUserdata(data)
-        //     console.log("get data");
-        // }
-        const response = await fetch('./data.json');
-        if (!response.ok) {
-            throw new Error('Failed to fetch data');
+        const res = await fetch("http://localhost:3000/query?channelid=mychannel&chaincodeid=basictest&function=GetAllUsers", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        const data = await res.json();
+        console.log(data);
+        if (res.status === 422 || !data) {
+            console.log("error ");
+        } else {
+            setUserdata(data)
+            console.log("get data");
         }
-        const jsonData = await response.json();
-        // setUserData(jsonData);
-        setUserdata(jsonData);
+        // const response = await fetch('./data.json');
+        // if (!response.ok) {
+        //     throw new Error('Failed to fetch data');
+        // }
+        // const jsonData = await response.json();
+        // // setUserData(jsonData);
+        // setUserdata(jsonData);
     }
 
     useEffect(() => {

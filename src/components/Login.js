@@ -1,50 +1,71 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
+import { Context } from '..';
 
 function Login() {
+    
     const [forgotPasswordInput, setForgotPasswordInput] = useState('');
     const [loginProgress, setLoginProgress] = useState(false);
+    let users = [];
 
+    const {isAuthenticatedEmploye , setIsAuthenticatedEmploye} = useContext(Context);
+
+    const [flag, setFlag] = useState(true);
+
+    // useEffect(() => {
+    //     setUsers(responseData);
+    // }, []);
+
+      
     const handleLogin = async (event) => {
         event.preventDefault();
-        const username = event.target.elements.username.value;
-        const password = event.target.elements.password.value;
-
-        console.log("Username:", username);
-        console.log("Password:", password);
-        setLoginProgress(true);
 
         try {
-            const response = await fetch('http://localhost:8000/user/login', {
-                method: 'POST',
+            const  response = await axios.get('http://localhost:3002/query?channelid=mychannel&chaincodeid=basictest&function=GetAllUsers', {
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name: username, password: password })
+            
             });
+            
+            const responseData = response.data; // Assuming the response data is an object with a 'users' property
+            
+            users = responseData;
+            // console.log(flag);
+            console.log("users : " , users); // Accessing the 'users' property from the response data
+                // Now you can use the responseData.users array as needed
+            setFlag(true);
+            setIsAuthenticatedEmploye(true);
+            // console.log(Response.users);
 
-            if (response.ok) {
-                setLoginProgress(false);
-                const data = await response.json();
-                console.log(data.name);
-                console.log(data.role);
-                console.log(data.id);
-                if (data.role === 'student') {
-                    window.location.href = `./studentDashboard/${data.id}`;
-                }
-                if (data.role === 'teacher') {
-                    window.location.href = `./teacherDashboard/${data.id}`;
-                }
-                console.log('User Logged in successfully');
-            } else {
-                setLoginProgress(false);
-                alert('Wrong Name and password');
-            }
+
+            // if (response.ok) {
+            //     // setLoginProgress(false);
+            //     const data = await response.data;
+            //     console.log(data);
+            //     // console.log(data.role);
+            //     // console.log(data.id);
+            //     // if (data.role === 'student') {
+            //     //     window.location.href = `./studentDashboard/${data.id}`;
+            //     // }
+            //     // if (data.role === 'teacher') {
+            //     //     window.location.href = `./teacherDashboard/${data.id}`;
+            //     // }
+            //     console.log('User Logged in successfully');
+            // } else {
+            //     setLoginProgress(false);
+            //     alert('Wrong Name and password');
+            // }
         } catch (error) {
             console.error('Error logging in:', error.message);
             alert('Something went wrong with server')
         }
     };
+
+
+    
+
 
     const handleForgotPassword = () => {
         const username = prompt("Enter your username");
@@ -56,7 +77,7 @@ function Login() {
 
     return (
         <div className='login-signup' style={{ height: "100vh", display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            {!loginProgress && <div className="createbox" style={{ border: "2px solid #007bff", borderRadius: '20px', padding: "20px", maxWidth: "400px" }}>
+            {<div className="createbox" style={{ border: "2px solid #007bff", borderRadius: '20px', padding: "20px", maxWidth: "400px" }}>
                 <form className="form" id="signin" onSubmit={handleLogin}>
                     <h1 className="form__title">Login</h1>
                     <div className="form__input-group" style={{ marginBottom: "20px" }}>
@@ -71,9 +92,22 @@ function Login() {
                     </div>
                 </form>
             </div>}
+            
+
+
+            {flag && users.map((user, index) => (
+                <div key={index}>
+                    <p>UserID: {user.UserID}</p>
+                    <p>Password: {user.Password}</p>
+                    <p>UserType: {user.UserType}</p>
+                    <p>BankName: {user.BankName}</p>
+                    <p>BankAccountNumber: {user.BankAccountNumber}</p>
+                </div>
+            ))}
+{/* 
             {loginProgress && <div className="spinner-border" role="status">
                 <span className="visually-hidden">Loading...</span>
-            </div>}
+            </div>} */}
         </div>
     );
 }
